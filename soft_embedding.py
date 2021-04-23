@@ -17,6 +17,7 @@ class SoftEmbedding(nn.Module):
         """
         super(SoftEmbedding, self).__init__()
         self.wte = wte
+        self.n_tokens = n_tokens
         self.learned_embedding = nn.parameter.Parameter(self.initialize_embedding(wte,
                                                                                n_tokens, 
                                                                                random_range, 
@@ -48,6 +49,6 @@ class SoftEmbedding(nn.Module):
         Returns:
             torch.float: encoding of text concatenated with learned task specifc embedding
         """
-        input_embedding = self.wte(tokens)
+        input_embedding = self.wte(tokens[:, self.n_tokens:])
         learned_embedding = self.learned_embedding.repeat(input_embedding.size(0), 1, 1)
         return torch.cat([learned_embedding, input_embedding], 1)

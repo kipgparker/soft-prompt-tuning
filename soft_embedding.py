@@ -38,7 +38,7 @@ class SoftEmbedding(nn.Module):
         """
         if initialize_from_vocab:
             return self.wte.weight[:n_tokens].clone().detach()
-        return torch.FloatTensor(wte.weight.size(1), n_tokens).uniform_(-random_range, random_range)
+        return torch.FloatTensor(n_tokens, wte.weight.size(1)).uniform_(-random_range, random_range)
             
     def forward(self, tokens):
         """run forward pass
